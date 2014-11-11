@@ -1,8 +1,12 @@
 package org.crowdMotion.utils;
 
+import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
 import java.awt.GridLayout;
 
+import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
@@ -27,21 +31,34 @@ public class MapRender extends JPanel
 	private JTextField gate2;
 	private JTextField speed;
 	
-	
+	private GridBagConstraints topConstraints;
+	private GridBagConstraints bottomConstraints;
 	
 	public MapRender() 
 	{
 		super();
 		
-		this.setLayout(new GridLayout(2, 1));
+		this.setLayout(new GridBagLayout());
 		
 		top = new JPanel();
 		top.setBackground(Color.BLUE);
 		
-		
+		topConstraints = new GridBagConstraints();
+		topConstraints.fill = GridBagConstraints.HORIZONTAL;
+		topConstraints.gridx = 0;
+		topConstraints.gridy = 0;
+		topConstraints.ipady = 380;
+		topConstraints.weightx = 1.0;
+
 		bottom = new JPanel();
 		bottom.setBackground(Color.RED);
-		bottom.setLayout(new GridLayout(1, 2));
+		bottom.setLayout(new BorderLayout());
+		
+		bottomConstraints = new GridBagConstraints();
+		bottomConstraints.fill = GridBagConstraints.HORIZONTAL;
+		bottomConstraints.gridx = 0;
+		bottomConstraints.gridy = 1;
+		bottomConstraints.ipady = 50;
 		
 		bottomLeftChild = new JPanel();
 		bottomLeftChild.setBackground(Color.GREEN);
@@ -77,11 +94,11 @@ public class MapRender extends JPanel
 		bottomRightChild.add(speed);
 		
 		
-		bottom.add(bottomLeftChild);
-		bottom.add(bottomRightChild);
-		
-		this.add(top);
-		this.add(bottom);
+		bottom.add(bottomLeftChild, BorderLayout.WEST);
+		bottom.add(bottomRightChild, BorderLayout.CENTER);
+
+		this.add(top, topConstraints);
+		this.add(bottom, bottomConstraints);
 		
 	}
 
