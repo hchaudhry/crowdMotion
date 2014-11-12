@@ -5,16 +5,20 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 
-public class MapReader {
+public class MapReader 
+{
 
 	
-	public static String readMapFile(String mapFile){
-	    try {
+	public static String readMapFile(String mapFile)
+	{
+	    try 
+	    {
 	    	BufferedReader br = new BufferedReader(new FileReader(mapFile));
 	        StringBuilder sb = new StringBuilder();
 	        String line = br.readLine();
 	
-	        while (line != null) {
+	        while (line != null) 
+	        {
 	            sb.append(line);
 	            sb.append(System.lineSeparator());
 	            line = br.readLine();
@@ -24,13 +28,57 @@ public class MapReader {
 	        
 	        return everything;
 	        
-	    } catch(FileNotFoundException e) {
+	    } 
+	    catch(FileNotFoundException e) 
+	    {
 	    	e.printStackTrace();
 	    	return null;
-	    } catch (IOException e) {
+	    } 
+	    catch (IOException e) 
+	    {
 			e.printStackTrace();
 			return null;
-		} catch(Exception e) {
+		}
+	    catch(Exception e) 
+	    {
+	    	e.printStackTrace();
+	    	return null;
+	    }
+	}
+	
+	
+	public static MapLinesContainer readMapFile2(String mapFile)
+	{
+	    try 
+	    {
+	    	MapLinesContainer container = new MapLinesContainer();
+	    	BufferedReader br = new BufferedReader(new FileReader(mapFile));
+	        StringBuilder sb = new StringBuilder();
+	        String line = br.readLine();
+	
+	        while (line != null) 
+	        {
+	            container.getLines().add(line);
+	            line = br.readLine();
+	        }
+	        br.close();
+	         
+	        
+	        return container; 
+	        
+	    } 
+	    catch(FileNotFoundException e) 
+	    {
+	    	e.printStackTrace();
+	    	return null;
+	    } 
+	    catch (IOException e) 
+	    {
+			e.printStackTrace();
+			return null;
+		}
+	    catch(Exception e) 
+	    {
 	    	e.printStackTrace();
 	    	return null;
 	    }

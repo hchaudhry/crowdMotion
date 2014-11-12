@@ -2,9 +2,11 @@ package org.crowdMotion.utils;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.GridLayout;
+import java.util.List;
 
 import javax.swing.JButton;
 import javax.swing.JLabel;
@@ -34,14 +36,25 @@ public class MapRender extends JPanel
 	private GridBagConstraints topConstraints;
 	private GridBagConstraints bottomConstraints;
 	
-	public MapRender() 
+	private JButton run;
+	
+	private MapLinesContainer mapLinesContainer;
+	private JLabel symbolsLine;
+	
+	
+	public MapRender(MapLinesContainer container) 
 	{
 		super();
+		
+		mapLinesContainer = container;
+		symbolsLine = new JLabel();
+		
 		
 		this.setLayout(new GridBagLayout());
 		
 		top = new JPanel();
-		top.setBackground(Color.BLUE);
+	//	top.setBackground(Color.BLUE);
+		displaySymbolsByLine(container.getLines()); //added
 		
 		topConstraints = new GridBagConstraints();
 		topConstraints.fill = GridBagConstraints.HORIZONTAL;
@@ -66,7 +79,8 @@ public class MapRender extends JPanel
 		
 		bottomRightChild = new JPanel();
 		bottomRightChild.setBackground(Color.YELLOW);
-		bottomRightChild.setLayout(new GridLayout(2, 3));
+		bottomRightChild.setLayout(new GridLayout(2, 4));
+
 		
 		
 		displacement = new JLabel(Constants.DEPLACEMENTS);
@@ -78,6 +92,8 @@ public class MapRender extends JPanel
 		bottomLeftChild.add(round);
 		bottomLeftChild.add(displacementMouseNumber);
 		bottomLeftChild.add(arrivedMouseNumber);
+	
+		
 		
 		gate1Label = new JLabel(Constants.PORTE_1);
 		gate2Label =  new JLabel(Constants.PORTE_2);
@@ -85,21 +101,42 @@ public class MapRender extends JPanel
 		gate1 = new JTextField();
 		gate2 = new JTextField();
 		speed = new JTextField();
+		run = new JButton(Constants.LANCER);
+		
 		
 		bottomRightChild.add(gate1Label);
 		bottomRightChild.add(gate2Label);
 		bottomRightChild.add(speedLabel);
+		bottomRightChild.add(run);
 		bottomRightChild.add(gate1);
 		bottomRightChild.add(gate2);
 		bottomRightChild.add(speed);
-		
+	
 		
 		bottom.add(bottomLeftChild, BorderLayout.WEST);
 		bottom.add(bottomRightChild, BorderLayout.CENTER);
 
+		
+		
+		
 		this.add(top, topConstraints);
 		this.add(bottom, bottomConstraints);
 		
+		
+	}
+	
+	
+	public void displaySymbolsByLine(List<String> lines)
+	{
+		for(String currentLine : lines)
+		{
+			System.out.println(currentLine);
+			symbolsLine.setText(currentLine);
+			top.add(symbolsLine);
+			
+			
+			
+		}
 	}
 
 }
