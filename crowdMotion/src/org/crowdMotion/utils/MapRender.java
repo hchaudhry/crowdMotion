@@ -41,6 +41,7 @@ public class MapRender extends JPanel
 	private MapLinesContainer mapLinesContainer;
 	private JLabel symbolsLine;
 	
+	private JPanel buttonPanel;
 	
 	public MapRender(MapLinesContainer container) 
 	{
@@ -102,16 +103,18 @@ public class MapRender extends JPanel
 		gate2 = new JTextField();
 		speed = new JTextField();
 		run = new JButton(Constants.LANCER);
+		buttonPanel = new JPanel();
 		
+		buttonPanel.add(run);
 		
 		bottomRightChild.add(gate1Label);
 		bottomRightChild.add(gate2Label);
 		bottomRightChild.add(speedLabel);
-		bottomRightChild.add(run);
+		bottomRightChild.add(new JLabel(""));
 		bottomRightChild.add(gate1);
 		bottomRightChild.add(gate2);
 		bottomRightChild.add(speed);
-	
+		bottomRightChild.add(buttonPanel);
 		
 		bottom.add(bottomLeftChild, BorderLayout.WEST);
 		bottom.add(bottomRightChild, BorderLayout.CENTER);
