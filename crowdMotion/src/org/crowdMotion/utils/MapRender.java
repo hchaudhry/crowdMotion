@@ -2,12 +2,13 @@ package org.crowdMotion.utils;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.GridLayout;
+import java.awt.image.BufferedImage;
 import java.util.List;
 
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -42,6 +43,9 @@ public class MapRender extends JPanel
 	private JLabel symbolsLine;
 	
 	private JPanel buttonPanel;
+	
+	private Sprite sprit;
+	private BufferedImage buff;
 	
 	public MapRender(MapLinesContainer container) 
 	{
@@ -105,7 +109,12 @@ public class MapRender extends JPanel
 		run = new JButton(Constants.LANCER);
 		buttonPanel = new JPanel();
 		
+//		sprit = new Sprite();
+//		buff = sprit.getSprite("/home/hussam/Bureau/Foule/sprit.png", 0, 2);
+//		JLabel picLabel = new JLabel(new ImageIcon(buff));
+		
 		buttonPanel.add(run);
+//		buttonPanel.add(picLabel);
 		
 		bottomRightChild.add(gate1Label);
 		bottomRightChild.add(gate2Label);
