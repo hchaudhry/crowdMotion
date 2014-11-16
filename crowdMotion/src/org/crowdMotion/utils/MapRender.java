@@ -2,12 +2,14 @@ package org.crowdMotion.utils;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.Dimension;
+import java.awt.FlowLayout;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.GridLayout;
+import java.awt.Panel;
 import java.util.List;
 
+import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -35,13 +37,14 @@ public class MapRender extends JPanel
 	
 	private GridBagConstraints topConstraints;
 	private GridBagConstraints bottomConstraints;
-	
 	private JButton run;
 	
 	private MapLinesContainer mapLinesContainer;
 	private JLabel symbolsLine;
 	
 	private JPanel buttonPanel;
+	
+	
 	
 	public MapRender(MapLinesContainer container) 
 	{
@@ -51,11 +54,12 @@ public class MapRender extends JPanel
 		symbolsLine = new JLabel();
 		
 		
+		
 		this.setLayout(new GridBagLayout());
 		
 		top = new JPanel();
-	//	top.setBackground(Color.BLUE);
-		displaySymbolsByLine(container.getLines()); //added
+		top.setLayout(new GridLayout(mapLinesContainer.getLines().size(), 1));
+		displaySymbolsByLine(container.getLines()); 
 		
 		topConstraints = new GridBagConstraints();
 		topConstraints.fill = GridBagConstraints.HORIZONTAL;
@@ -124,22 +128,50 @@ public class MapRender extends JPanel
 		
 		this.add(top, topConstraints);
 		this.add(bottom, bottomConstraints);
-		
-		
 	}
 	
 	
+	/*JPanel north;
+	JPanel south;
+	public MapRender(MapLinesContainer container) 
+	{
+		super();
+		
+		this.setLayout(new BorderLayout());
+				
+		north = new JPanel();
+		north.setBackground(Color.GREEN);
+		north.setLayout(new GridLayout(container.getLines().size(),1));
+		south = new JPanel();
+		south.setBackground(Color.RED);
+		
+		mapLinesContainer = container;
+		
+		
+		displaySymbolsByLine(container.getLines()); 
+		
+		//north.add(new JLabel(container.getLines().get(5)));
+		
+	//	north.add(new JLabel(container.getLines().get(8)));
+		
+		this.add(north, BorderLayout.CENTER);
+		this.add(south, BorderLayout.SOUTH);
+	}
+	*/
+	
 	public void displaySymbolsByLine(List<String> lines)
 	{
+		symbolsLine = null;
 		for(String currentLine : lines)
 		{
 			System.out.println(currentLine);
+			symbolsLine = new JLabel();
 			symbolsLine.setText(currentLine);
 			top.add(symbolsLine);
-			
-			
-			
+			symbolsLine = null;
 		}
+		
+		
 	}
 
 }
