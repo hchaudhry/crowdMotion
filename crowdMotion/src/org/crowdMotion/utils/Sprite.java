@@ -8,10 +8,10 @@ import javax.imageio.ImageIO;
 
 public class Sprite {
 
-    private static BufferedImage spriteSheet;
-    private static final int TILE_SIZE = 26;
+    private  BufferedImage spriteSheet;
+    
 
-    public static BufferedImage loadSprite(String file) {
+    public BufferedImage loadSprite(String file) {
 
         BufferedImage sprite = null;
 
@@ -24,13 +24,13 @@ public class Sprite {
         return sprite;
     }
 
-    public static BufferedImage getSprite(String file, int xGrid, int yGrid) {
+    public BufferedImage getSpriteFile(String file, int xGrid, int yGrid) {
 
         if (spriteSheet == null) {
             spriteSheet = loadSprite(file);
         }
 
-        return spriteSheet.getSubimage(xGrid * TILE_SIZE, yGrid * TILE_SIZE, TILE_SIZE, TILE_SIZE);
+        return spriteSheet.getSubimage(xGrid * Constants.TILE_SIZE, yGrid * Constants.TILE_SIZE, Constants.TILE_SIZE, Constants.TILE_SIZE);
     }
 
 }

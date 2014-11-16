@@ -20,4 +20,10 @@ public class MapLinesContainer
 	{
 		return lines;
 	}
+	
+	
+	public int getSize()
+	{
+		return lines.size();
+	}
 }

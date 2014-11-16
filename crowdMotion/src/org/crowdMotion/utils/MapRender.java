@@ -6,8 +6,10 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.GridLayout;
 import java.awt.image.BufferedImage;
+import java.util.ArrayList;
 import java.util.List;
 
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -43,8 +45,8 @@ public class MapRender extends JPanel
 	private JPanel buttonPanel;
 	
 
-	private Sprite sprit;
-	private BufferedImage buff;
+	
+	private BufferedImage buff; //get buggy if put it in local inside convertCharToSprite() ==> I don't know why
 
 	
 	public MapRender(MapLinesContainer container) 
@@ -59,7 +61,7 @@ public class MapRender extends JPanel
 		this.setLayout(new GridBagLayout());
 		
 		top = new JPanel();
-		top.setLayout(new GridLayout(mapLinesContainer.getLines().size(), 1));
+		top.setLayout(new GridLayout(mapLinesContainer.getSize(), 1));
 		displaySymbolsByLine(container.getLines()); 
 		
 		topConstraints = new GridBagConstraints();
@@ -110,13 +112,7 @@ public class MapRender extends JPanel
 		run = new JButton(Constants.LANCER);
 		buttonPanel = new JPanel();
 		
-//		sprit = new Sprite();
-//		buff = sprit.getSprite("/home/hussam/Bureau/Foule/sprit.png", 0, 2);
-//		JLabel picLabel = new JLabel(new ImageIcon(buff));
-		
 		buttonPanel.add(run);
-//		buttonPanel.add(picLabel);
-		
 		bottomRightChild.add(gate1Label);
 		bottomRightChild.add(gate2Label);
 		bottomRightChild.add(speedLabel);
@@ -134,6 +130,8 @@ public class MapRender extends JPanel
 		
 		this.add(top, topConstraints);
 		this.add(bottom, bottomConstraints);
+		
+		//convertSymbolsToSprite(null);
 	}
 	
 	
@@ -170,14 +168,74 @@ public class MapRender extends JPanel
 		symbolsLine = null;
 		for(String currentLine : lines)
 		{
-			System.out.println(currentLine);
-			symbolsLine = new JLabel();
-			symbolsLine.setText(currentLine);
-			top.add(symbolsLine);
-			symbolsLine = null;
+			List<ImageIcon> icons = convertCharsLineToIconsLine(currentLine);
+		
+			for (ImageIcon currentIcon : icons) 
+			{
+				symbolsLine = new JLabel(currentIcon);
+				top.add(symbolsLine);
+				symbolsLine = null;
+			}
+		}
+	}
+	
+	
+	public List<ImageIcon> convertCharsLineToIconsLine(String line)
+	{
+		List<ImageIcon> icons = new ArrayList<ImageIcon>();
+		
+		char[] lineAsArray = line.toCharArray();
+		
+		for(char currentChar :lineAsArray)
+		{
+			BufferedImage bufferedImage = convertCharToSprite(currentChar);
+			icons.add(new ImageIcon(bufferedImage));
+		}
+		
+		return icons;
+	}
+	
+	
+	public BufferedImage convertCharToSprite(Character character)
+	{
+		Sprite sprit = new Sprite();
+		
+		if(character.equals(Constants.MUR))
+		{
+			buff = sprit.getSpriteFile("/home/neimad/Bureau/sprite.png", 0, 1);
 		}
 		
 		
+		if(character.equals(Constants.ZONE_HERBE))
+		{
+			buff = sprit.getSpriteFile("/home/neimad/Bureau/sprite.png", 0, 2);
+		}
+		
+		
+		if(character.equals(Constants.ZONE_DEPLACEMENT))
+		{
+			buff = sprit.getSpriteFile("/home/neimad/Bureau/sprite.png", 0, 0);
+		}
+		
+		
+		if(character.equals(Constants.POINT_APPARITION))
+		{
+			buff = sprit.getSpriteFile("/home/neimad/Bureau/sprite.png", 0, 3);
+		}
+		
+		
+		if(character.equals(Constants.POINT_ARRIVEE))
+		{
+			buff = sprit.getSpriteFile("/home/neimad/Bureau/sprite.png", 0, 5);
+		}
+		
+		return buff;
+		
 	}
+	
+	
+	
+	
+	
 
 }

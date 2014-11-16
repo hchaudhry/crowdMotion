@@ -13,7 +13,13 @@ public class Constants
 	public static String VITESSE = "VITESSE";
 	public static String LANCER = "LANCER";
 	
+	public static final int TILE_SIZE = 26;
 	
-		
+	public static final char MUR = '*';
+	public static final char ZONE_HERBE = 'G';
+	public static final char ZONE_DEPLACEMENT = ' ';
+	public static final char POINT_APPARITION = 'D';
+	public static final char POINT_ARRIVEE = 'A';
+	
 	
 }
