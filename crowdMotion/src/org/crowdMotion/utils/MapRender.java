@@ -2,6 +2,7 @@ package org.crowdMotion.utils;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.GridLayout;
@@ -62,13 +63,13 @@ public class MapRender extends JPanel
 		
 		top = new JPanel();
 		top.setLayout(new GridLayout(mapLinesContainer.getSize(), 1));
-		displaySymbolsByLine(container.getLines()); 
+		displaySymbolsByLine(container.getLines());
 		
 		topConstraints = new GridBagConstraints();
 		topConstraints.fill = GridBagConstraints.HORIZONTAL;
 		topConstraints.gridx = 0;
 		topConstraints.gridy = 0;
-		topConstraints.ipady = 380;
+//		topConstraints.ipady = 380;
 		topConstraints.weightx = 1.0;
 
 		bottom = new JPanel();
@@ -79,7 +80,7 @@ public class MapRender extends JPanel
 		bottomConstraints.fill = GridBagConstraints.HORIZONTAL;
 		bottomConstraints.gridx = 0;
 		bottomConstraints.gridy = 1;
-		bottomConstraints.ipady = 50;
+//		bottomConstraints.ipady = 50;
 		
 		bottomLeftChild = new JPanel();
 		bottomLeftChild.setBackground(Color.GREEN);
@@ -202,31 +203,31 @@ public class MapRender extends JPanel
 		
 		if(character.equals(Constants.MUR))
 		{
-			buff = sprit.getSpriteFile("/home/neimad/Bureau/sprite.png", 0, 1);
+			buff = sprit.getSpriteFile("/home/hussam/Bureau/Foule/sprit.png", 0, 1);
 		}
 		
 		
 		if(character.equals(Constants.ZONE_HERBE))
 		{
-			buff = sprit.getSpriteFile("/home/neimad/Bureau/sprite.png", 0, 2);
+			buff = sprit.getSpriteFile("/home/hussam/Bureau/Foule/sprit.png", 0, 2);
 		}
 		
 		
 		if(character.equals(Constants.ZONE_DEPLACEMENT))
 		{
-			buff = sprit.getSpriteFile("/home/neimad/Bureau/sprite.png", 0, 0);
+			buff = sprit.getSpriteFile("/home/hussam/Bureau/Foule/sprit.png", 0, 0);
 		}
 		
 		
 		if(character.equals(Constants.POINT_APPARITION))
 		{
-			buff = sprit.getSpriteFile("/home/neimad/Bureau/sprite.png", 0, 3);
+			buff = sprit.getSpriteFile("/home/hussam/Bureau/Foule/sprit.png", 0, 3);
 		}
 		
 		
 		if(character.equals(Constants.POINT_ARRIVEE))
 		{
-			buff = sprit.getSpriteFile("/home/neimad/Bureau/sprite.png", 0, 5);
+			buff = sprit.getSpriteFile("/home/hussam/Bureau/Foule/sprit.png", 0, 5);
 		}
 		
 		return buff;
