@@ -21,7 +21,7 @@ public class Application
 		createWindow(new MapRender());*/
 		
 		
-		Field f = new Field("/home/neimad/Bureau/map.txt");
+		Field f = new Field("/home/hussam/Bureau/Foule/map.txt");
 		MapLinesContainer c = MapReader.readMapFile2(f.getMapFileName());
 		
 
@@ -33,7 +33,7 @@ public class Application
 	{
 		JFrame frame = new JFrame("FrameDemo");
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frame.setPreferredSize(new Dimension(1050, 480));
+		frame.setPreferredSize(new Dimension(1210, 605));
 		frame.setContentPane(render);
 		frame.pack();
 		frame.setVisible(true);
