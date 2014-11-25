@@ -20,6 +20,7 @@ public class Constants
 	public static final char ZONE_DEPLACEMENT = ' ';
 	public static final char POINT_APPARITION = 'D';
 	public static final char POINT_ARRIVEE = 'A';
+	public static final char SOURIS = 'S';
 	
 	
 }

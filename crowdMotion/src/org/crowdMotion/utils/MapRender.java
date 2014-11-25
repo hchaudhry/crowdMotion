@@ -2,13 +2,16 @@ package org.crowdMotion.utils;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -27,43 +30,42 @@ public class MapRender extends JPanel
 	private JLabel round;
 	private JLabel displacementMouseNumber;
 	private JLabel arrivedMouseNumber;
-	
 	private JLabel gate1Label;
 	private JLabel gate2Label;
 	private JLabel speedLabel;
-	
 	private JTextField gate1;
 	private JTextField gate2;
 	private JTextField speed;
-	
 	private GridBagConstraints topConstraints;
 	private GridBagConstraints bottomConstraints;
 	private JButton run;
-	
-	private MapLinesContainer mapLinesContainer;
 	private JLabel symbolsLine;
-	
 	private JPanel buttonPanel;
-	
-
-	
 	private BufferedImage buff; //get buggy if put it in local inside convertCharToSprite() ==> I don't know why
-
+	private MapLinesContainer linesContainer;
+	
 	
 	public MapRender(MapLinesContainer container) 
 	{
 		super();
+		linesContainer = container;
+		int rowsNumber = linesContainer.getSize();
+		configureRenderLayout(rowsNumber);
 		
-		mapLinesContainer = container;
-		symbolsLine = new JLabel();
+		
+		displayMap(linesContainer.getLines());
 		
 		
 		
+	}	
+	
+	
+	public void configureRenderLayout(int rowsNumber)
+	{
 		this.setLayout(new GridBagLayout());
 		
 		top = new JPanel();
-		top.setLayout(new GridLayout(mapLinesContainer.getSize(), 1));
-		displaySymbolsByLine(container.getLines());
+		top.setLayout(new GridLayout(rowsNumber, 1));
 		
 		topConstraints = new GridBagConstraints();
 		topConstraints.fill = GridBagConstraints.HORIZONTAL;
@@ -101,8 +103,6 @@ public class MapRender extends JPanel
 		bottomLeftChild.add(round);
 		bottomLeftChild.add(displacementMouseNumber);
 		bottomLeftChild.add(arrivedMouseNumber);
-	
-		
 		
 		gate1Label = new JLabel(Constants.PORTE_1);
 		gate2Label =  new JLabel(Constants.PORTE_2);
@@ -111,6 +111,25 @@ public class MapRender extends JPanel
 		gate2 = new JTextField();
 		speed = new JTextField();
 		run = new JButton(Constants.LANCER);
+		run.addActionListener(new ActionListener() 
+		{
+			@Override
+			public void actionPerformed(ActionEvent e) 
+			{
+				System.out.println("clic");
+				List<ArrayList<Integer>>gatesCoordinates = getCoordinatesOfAppearancePoints(linesContainer.getLines());
+				
+				
+				Map<Integer,String> firstlinesToRefresh = getAllContiguousAdjacentPlaces(linesContainer.getLines(), gatesCoordinates.get(0).get(0), gatesCoordinates.get(0).get(1));
+				Map<Integer,String> secondlinesToRefresh = getAllContiguousAdjacentPlaces(linesContainer.getLines(), gatesCoordinates.get(1).get(0), gatesCoordinates.get(1).get(1));
+				
+				refreshMapAtIndexLine(linesContainer.getLines(), firstlinesToRefresh);
+				refreshMapAtIndexLine(linesContainer.getLines(), secondlinesToRefresh);
+				System.out.println("clic2");
+				
+			}
+		});
+		
 		buttonPanel = new JPanel();
 		
 		buttonPanel.add(run);
@@ -125,46 +144,144 @@ public class MapRender extends JPanel
 		
 		bottom.add(bottomLeftChild, BorderLayout.WEST);
 		bottom.add(bottomRightChild, BorderLayout.CENTER);
-
-		
-		
 		
 		this.add(top, topConstraints);
 		this.add(bottom, bottomConstraints);
-		
-		//convertSymbolsToSprite(null);
 	}
 	
-	
-	/*JPanel north;
-	JPanel south;
-	public MapRender(MapLinesContainer container) 
+	public String replaceCharAtWith(String line, int index, char replacement)
 	{
-		super();
+		char[] lineAsCharsArray = line.toCharArray();
 		
-		this.setLayout(new BorderLayout());
-				
-		north = new JPanel();
-		north.setBackground(Color.GREEN);
-		north.setLayout(new GridLayout(container.getLines().size(),1));
-		south = new JPanel();
-		south.setBackground(Color.RED);
+		lineAsCharsArray[index] = replacement;
 		
-		mapLinesContainer = container;
+		return new String(lineAsCharsArray);
 		
-		
-		displaySymbolsByLine(container.getLines()); 
-		
-		//north.add(new JLabel(container.getLines().get(5)));
-		
-	//	north.add(new JLabel(container.getLines().get(8)));
-		
-		this.add(north, BorderLayout.CENTER);
-		this.add(south, BorderLayout.SOUTH);
 	}
-	*/
 	
-	public void displaySymbolsByLine(List<String> lines)
+	public Map<Integer,String> getAllContiguousAdjacentPlaces(List<String> lines, int row, int column)
+	{
+		Map<Integer,String> linesToRefresh =  new HashMap<Integer, String>();
+		
+		
+		if(lines.get(row).charAt(column + 1) == Constants.ZONE_DEPLACEMENT)
+		{
+			String line = replaceCharAtWith(lines.get(row), column + 1, 'S');
+			linesToRefresh.put(row,line);
+			
+		}
+		
+		
+		/*if(lines.get(row).charAt(column - 1) == Constants.ZONE_DEPLACEMENT)
+		{
+			String line = replaceCharAtWith(lines.get(row), column - 1, 'S');
+			linesToRefresh.put(row,line);
+		}
+		
+		if(lines.get(row - 1).charAt(column) == Constants.ZONE_DEPLACEMENT)
+		{
+			String line = replaceCharAtWith(lines.get(row - 1), column, 'S');
+			linesToRefresh.put(row - 1,line);
+		}
+		
+		
+		if(lines.get(row - 1).charAt(column + 1) == Constants.ZONE_DEPLACEMENT)
+		{
+			String line = replaceCharAtWith(lines.get(row - 1), column + 1, 'S');
+			linesToRefresh.put(row - 1,line);
+		}
+		
+		
+		if(lines.get(row - 1).charAt(column -1) == Constants.ZONE_DEPLACEMENT)
+		{
+			String line = replaceCharAtWith(lines.get(row - 1), column - 1, 'S');
+			linesToRefresh.put(row - 1,line);
+		}
+		
+		
+		if(lines.get(row + 1).charAt(column) == Constants.ZONE_DEPLACEMENT)
+		{
+			String line = replaceCharAtWith(lines.get(row + 1), column, 'S');
+			linesToRefresh.put(row + 1,line);
+		}
+		
+		
+		if(lines.get(row + 1).charAt(column + 1) == Constants.ZONE_DEPLACEMENT)
+		{
+			String line = replaceCharAtWith(lines.get(row + 1), column + 1, 'S');
+			linesToRefresh.put(row + 1,line);
+		}
+		
+		
+		if(lines.get(row + 1).charAt(column -1) == Constants.ZONE_DEPLACEMENT)
+		{
+			String line = replaceCharAtWith(lines.get(row + 1), column - 1, 'S');
+			linesToRefresh.put(row + 1,line);
+		}
+		
+		System.out.println(linesToRefresh);*/
+		return linesToRefresh;
+	}
+	
+	public List<ArrayList<Integer>> getCoordinatesOfAppearancePoints(List<String> lines)
+	{
+		char[] lineAsArray = null;
+		List<ArrayList<Integer>> gateIndexes =  new ArrayList<ArrayList<Integer>>(2);
+		
+		for(String currentLine : lines)
+		{
+			lineAsArray = currentLine.toCharArray();
+			
+			for(int i=0; i<lineAsArray.length; i++)
+			{
+				if(lineAsArray[i] == Constants.POINT_APPARITION)
+				{
+					ArrayList<Integer> coordinates = new ArrayList<Integer>(2);
+					coordinates.add(lines.indexOf(currentLine)); // y
+					coordinates.add(i); // x
+					gateIndexes.add(coordinates);
+				}
+			}
+		}
+		
+		return gateIndexes;
+	}
+	
+	
+	public void refreshMapAtIndexLine(List<String> previousLines ,Map<Integer,String> linesToRefreshWithIndex)
+	{
+		System.out.println(previousLines);
+		
+		for(Integer currentInt : linesToRefreshWithIndex.keySet())
+		{
+			String toRevove = previousLines.get(currentInt);
+			previousLines.remove(toRevove);
+			previousLines.add(currentInt, linesToRefreshWithIndex.get(currentInt));
+			
+			//BEGIN TEST
+			List<ImageIcon> icons = convertCharsLineToIconsLine(previousLines.get(currentInt));
+			
+			symbolsLine = null;
+			for (ImageIcon currentIcon : icons) 
+			{
+				symbolsLine = new JLabel(currentIcon);
+				top.add(symbolsLine);
+				symbolsLine = null;
+			}
+			//END TEST
+		
+		}
+		
+		System.out.println(previousLines);
+		//displayMap(previousLines);
+		
+		
+		
+		this.validate();
+		
+	}
+	
+	public void displayMap(List<String> lines)
 	{
 		symbolsLine = null;
 		for(String currentLine : lines)
@@ -203,31 +320,37 @@ public class MapRender extends JPanel
 		
 		if(character.equals(Constants.MUR))
 		{
-			buff = sprit.getSpriteFile("/home/hussam/Bureau/Foule/sprit.png", 0, 1);
+			buff = sprit.getSpriteFile("/home/neimad/Bureau/sprite.png", 0, 1);
 		}
 		
 		
 		if(character.equals(Constants.ZONE_HERBE))
 		{
-			buff = sprit.getSpriteFile("/home/hussam/Bureau/Foule/sprit.png", 0, 2);
+			buff = sprit.getSpriteFile("/home/neimad/Bureau/sprite.png", 0, 2);
 		}
 		
 		
 		if(character.equals(Constants.ZONE_DEPLACEMENT))
 		{
-			buff = sprit.getSpriteFile("/home/hussam/Bureau/Foule/sprit.png", 0, 0);
+			buff = sprit.getSpriteFile("/home/neimad/Bureau/sprite.png", 0, 0);
 		}
 		
 		
 		if(character.equals(Constants.POINT_APPARITION))
 		{
-			buff = sprit.getSpriteFile("/home/hussam/Bureau/Foule/sprit.png", 0, 3);
+			buff = sprit.getSpriteFile("/home/neimad/Bureau/sprite.png", 0, 3);
 		}
 		
 		
 		if(character.equals(Constants.POINT_ARRIVEE))
 		{
-			buff = sprit.getSpriteFile("/home/hussam/Bureau/Foule/sprit.png", 0, 5);
+			buff = sprit.getSpriteFile("/home/neimad/Bureau/sprite.png", 0, 5);
+		}
+		
+		
+		if(character.equals(Constants.SOURIS))
+		{
+			buff = sprit.getSpriteFile("/home/neimad/Bureau/sprite.png", 0, 4);
 		}
 		
 		return buff;

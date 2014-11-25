@@ -21,7 +21,7 @@ public class Application
 		createWindow(new MapRender());*/
 		
 		
-		Field f = new Field("/home/hussam/Bureau/Foule/map.txt");
+		Field f = new Field("/home/neimad/Bureau/map.txt");
 		MapLinesContainer c = MapReader.readMapFile2(f.getMapFileName());
 		
 
@@ -36,6 +36,7 @@ public class Application
 		frame.setPreferredSize(new Dimension(1210, 605));
 		frame.setContentPane(render);
 		frame.pack();
+		//frame.setResizable(false); //added
 		frame.setVisible(true);
 	}
 }
